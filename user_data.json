@@ -1,8 +1,8 @@
 {
     "ollienel777": {
-        "total_exp": 0,
+        "total_exp": 25,
         "strands": {
-            "Creativity": 0,
+            "Creativity": 25,
             "Skill-building": 0,
             "Physical/Well-being": 0,
             "Leisure": 0,
@@ -25,7 +25,7 @@
             "Origami": 0,
             "Journaling": 0,
             "Singing": 0,
-            "Rapping": 0,
+            "Rapping": 25,
             "Poetry writing": 0,
             "Gardening": 0,
             "Calligraphy": 0,
@@ -60,7 +60,10 @@
             "Play co-op games": 0,
             "Make a collaborative playlist": 0,
             "Have an award ceremony with friends (e.g. most likely to...)": 0
-        }
+        },
+        "unlocked_activities": [
+            "Rapping"
+        ]
     },
     "renchiin": {
         "total_exp": 0,

@@ -159,6 +159,40 @@ async def gen_new_activity(client, message: Message, username: str) -> None:
 
     await message.channel.send(f"Awesome! You chose **{selected_activity}**. Have fun, {username}! 🎉")
 
+    # 🛠 NEW: Save to user_data.json
+    data = load_user_data()
+
+    if username not in data:
+        await message.channel.send(f"Error: {username} does not have a profile yet. Please use `$profile` first!")
+        return
+
+    user_profile = data[username]
+
+    # Initialize unlocked_activities list if not exists
+    if "unlocked_activities" not in user_profile:
+        user_profile["unlocked_activities"] = []
+
+    if selected_activity not in user_profile["unlocked_activities"]:
+        user_profile["unlocked_activities"].append(selected_activity)
+
+    # Add 25 EXP to the activity
+    if selected_activity not in user_profile["activities"]:
+        user_profile["activities"][selected_activity] = 0
+    user_profile["activities"][selected_activity] += 25
+
+    # Update total EXP
+    user_profile["total_exp"] += 25
+
+    # Update corresponding strand EXP
+    if strand not in user_profile["strands"]:
+        user_profile["strands"][strand] = 0
+    user_profile["strands"][strand] += 25
+
+    # Save the changes
+    save_user_data(data)
+
+    await message.channel.send(f"✅ You've unlocked **{selected_activity}** and gained **25 EXP** towards **{strand}**!")
+
 def get_response(user_input: str, username: str = "", pfp_url: str = "") -> str:
     lowered: str = user_input.lower()
 
