@@ -241,9 +241,18 @@ async def show_activity_track(client, message: Message, username: str, user_data
         color=0x00FFAA
     )
 
-    for idx, task in enumerate(activity_data["current_tasks"], start=1):
-        embed.add_field(name=f"Task {idx}", value=task, inline=False)
+    for idx, task_name in enumerate(activity_data["current_tasks"], start=1):
+        # Find the EXP associated with the task
+        master_tasks = master_activity_tasks.get(activity_name, [])
+        task_info = next((task for task in master_tasks if task["name"] == task_name), None)
 
+        if task_info:
+            exp_amount = task_info["exp"]
+            value = f"{task_name} ({exp_amount} EXP)"
+        else:
+            value = f"{task_name}"
+
+        embed.add_field(name=f"Task {idx}", value=value, inline=False)
     await message.channel.send(embed=embed)
 
 async def complete_activity_task(client, message: Message, username: str, user_data: dict, activity_name: str, task_num: int) -> None:

@@ -1,8 +1,8 @@
 {
     "ollienel777": {
-        "total_exp": 65,
+        "total_exp": 85,
         "strands": {
-            "Creativity": 65,
+            "Creativity": 85,
             "Skill-building": 0,
             "Physical/Well-being": 0,
             "Leisure": 0,
@@ -64,10 +64,10 @@
         "badges": {},
         "activity_tracks": {
             "Journaling": {
-                "exp": 65,
-                "tasks_completed": 1,
+                "exp": 85,
+                "tasks_completed": 2,
                 "current_tasks": [
-                    "Daily Entry",
+                    "Illustrated Page",
                     "Memory Capture",
                     "Creative Story Entry"
                 ]
