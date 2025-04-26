@@ -38,7 +38,6 @@ def save_user_data(data):
     with open(DATA_FILE, 'w') as f:
         json.dump(data, f, indent=4)
 
-
 def create_user_profile(username: str) -> str:
     data = load_user_data()
 
@@ -64,33 +63,18 @@ def create_user_profile(username: str) -> str:
     save_user_data(data)
     return f"{username}, your profile has been created! Let's start earning EXP! 🎯"
 
-
-
-def get_response(user_input: str, username: str = "") -> str:
-    lowered: str = user_input.lower()
-
-    if lowered.startswith('log') or lowered.startswith('l'):
-        
-
-        return 'hello :)'
-    
-    if lowered.startswith('profile'):
-        return create_user_profile(username)
-    
-    if lowered.startswith('activity'):
-        
+def gen_new_activity(username: str) -> str:
         #strand = lowered[2]
 
         #display possible category to user
-        def activity_selector():
-            print("Choose a strand from the following options:")
-            print("1. Creativity")
-            print("2. Skill-building")
-            print("3. Physical/Well-being")
-            print("4. Leisure")
-            print("5. Reading/Learning")
-            print("6. Social")
-        
+        print("Choose a strand from the following options:")
+        print("1. Creativity")
+        print("2. Skill-building")
+        print("3. Physical/Well-being")
+        print("4. Leisure")
+        print("5. Reading/Learning")
+        print("6. Social")
+
         activity_input = input("Choose your preferred category of activity for today: ")
 
         #match input number to strand
@@ -115,5 +99,17 @@ def get_response(user_input: str, username: str = "") -> str:
                 return f"Sorry, '{strand}' is not a valid category. Please type choice from categories 1-6. "
         
         #return daily activity generator
-        
+
+
+def get_response(user_input: str, username: str = "") -> str:
+    lowered: str = user_input.lower()
+
+    if lowered.startswith('log') or lowered.startswith('l'):
+        return 'hello :)'
+    
+    if lowered.startswith('profile'):
+        return create_user_profile(username)
+    
+    if lowered.startswith('activity'):
+        return gen_new_activity(username)
 
