@@ -1,4 +1,6 @@
 from random import choice, randint
+from discord import Message
+import asyncio
 import json
 import os
 import random
@@ -63,45 +65,56 @@ def create_user_profile(username: str) -> str:
     save_user_data(data)
     return f"{username}, your profile has been created! Let's start earning EXP! 🎯"
 
-def gen_new_activity(username: str) -> str:
-        #strand = lowered[2]
+async def gen_new_activity(client, message: Message, username: str) -> None:
+    strand_list = (
+        "Choose a strand from the following options:\n"
+        "1. Creativity\n"
+        "2. Skill-building\n"
+        "3. Physical/Well-being\n"
+        "4. Leisure\n"
+        "5. Reading/Learning\n"
+        "6. Social\n\n"
+        "Reply with a number (1-6) to pick your preferred category!"
+    )
 
-        #display possible category to user
-        print("Choose a strand from the following options:")
-        print("1. Creativity")
-        print("2. Skill-building")
-        print("3. Physical/Well-being")
-        print("4. Leisure")
-        print("5. Reading/Learning")
-        print("6. Social")
+    await message.channel.send(strand_list)
 
-        activity_input = input("Choose your preferred category of activity for today: ")
+    def check(m):
+        return m.author == message.author and m.channel == message.channel
 
-        #match input number to strand
-        allstrands = {
-            "1": "Creativity",
-            "2": "Skill-building",
-            "3": "Physical/Well-being",
-            "4": "Leisure",
-            "5": "Reading/Learning",
-            "6": "Social"
-        }
-        
-        #define strand as user's choice 
-        strand = allstrands.get(activity_input)
+    try:
+        reply = await client.wait_for('message', check=check, timeout=30.0)
+    except asyncio.TimeoutError:
+        await message.channel.send(f"{username}, you took too long to respond. Please try again later.")
+        return
 
-        #generate random activity
-        def daily_activity(strand): 
-            if strand in activities:
-                activity_choice = random.sample(activities[strand], 2)
-                return activity_choice
-            else:
-                return f"Sorry, '{strand}' is not a valid category. Please type choice from categories 1-6. "
-        
-        #return daily activity generator
+    activity_input = reply.content.strip()
 
+    allstrands = {
+        "1": "Creativity",
+        "2": "Skill-building",
+        "3": "Physical/Well-being",
+        "4": "Leisure",
+        "5": "Reading/Learning",
+        "6": "Social"
+    }
 
-def get_response(user_input: str, username: str = "") -> str:
+    strand = allstrands.get(activity_input)
+
+    if not strand:
+        await message.channel.send("Invalid choice. Please type a number between 1 and 6 next time!")
+        return
+
+    if strand in activities:
+        activity_choice = random.sample(activities[strand], 2)
+        formatted_choices = "\n- " + "\n- ".join(activity_choice)
+        await message.channel.send(
+            f"Here are two activities you could try from **{strand}**:\n{formatted_choices}"
+        )
+    else:
+        await message.channel.send(f"Something went wrong. Please try again.")
+
+def get_response(client, user_input: str, username: str = "") -> str:
     lowered: str = user_input.lower()
 
     if lowered.startswith('log') or lowered.startswith('l'):
@@ -109,7 +122,3 @@ def get_response(user_input: str, username: str = "") -> str:
     
     if lowered.startswith('profile'):
         return create_user_profile(username)
-    
-    if lowered.startswith('activity'):
-        return gen_new_activity(username)
-

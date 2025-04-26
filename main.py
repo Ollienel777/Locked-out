@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from discord import Intents, Client, Message
 from responses import get_response
+from responses import gen_new_activity
 
 #Load our token from somewhere safe.
 load_dotenv()
@@ -21,7 +22,7 @@ async def send_message(message: Message, user_message: str, username: str) -> No
         return
 
     try:
-        response: str = get_response(user_message, username)
+        response: str = get_response(client, user_message, username)
         await message.channel.send(response)
     except Exception as e:
         print(e)
@@ -49,7 +50,11 @@ async def on_message(message: Message) -> None:
         return
 
     command = content[1:]  # remove $
-
+    
+    if command.startswith('activity'):
+        await gen_new_activity(client, message, username)
+        return
+    
     await send_message(message, command, username)
 
 #Step 5: Main entry point
