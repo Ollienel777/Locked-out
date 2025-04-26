@@ -1,5 +1,5 @@
 from random import choice, randint
-from discord import Message
+from discord import Message, Embed
 import asyncio
 import json
 import os
@@ -27,7 +27,14 @@ activities = {
                 "Join a new server of interest", "Participate in a micrograme with a group of friends (e.g. pictionary)", "Host a small call with friends and check in with them", "Challenge friends to trivia", "Play co-op games", "Make a collaborative playlist", "Have an award ceremony with friends (e.g. most likely to...)"
             ]
         }
-
+ALL_STRANDS = {
+    "1": "Creativity",
+    "2": "Skill-building",
+    "3": "Physical/Well-being",
+    "4": "Leisure",
+    "5": "Reading/Learning",
+    "6": "Social"
+}
 def load_user_data():
     if not os.path.exists(DATA_FILE):
         with open(DATA_FILE, 'w') as f:
@@ -42,28 +49,54 @@ def save_user_data(data):
 
 def create_user_profile(username: str) -> str:
     data = load_user_data()
+    if username not in data:
+        # Create a new profile structure
+        data[username] = {
+            "total_exp": 0,
+            "strands": {},
+            "activities": {}
+        }
 
-    if username in data:
-        return f"{username}, you already have a profile!"
+        # Initialize strands
+        for strand in activities.keys():
+            data[username]["strands"][strand] = 0
 
-    # Create a new profile structure
-    data[username] = {
-        "total_exp": 0,
-        "strands": {},
-        "activities": {}
-    }
+        # Initialize individual activities
+        for strand, acts in activities.items():
+            for act in acts:
+                data[username]["activities"][act] = 0
 
-    # Initialize strands
-    for strand in activities.keys():
-        data[username]["strands"][strand] = 0
+        save_user_data(data)
+        return f"{username}, your profile has been created! Let's start earning EXP! 🎯"
+        
 
-    # Initialize individual activities
-    for strand, acts in activities.items():
-        for act in acts:
-            data[username]["activities"][act] = 0
+def get_profile_card(username: str, pfp_url: str) -> Embed:
+    data = load_user_data()
 
-    save_user_data(data)
-    return f"{username}, your profile has been created! Let's start earning EXP! 🎯"
+    if username not in data:
+        embed = Embed(title="Error", description=f"{username}, you don't have a profile yet. Use `$profile` to create one!", color=0xFF0000)
+        return embed
+
+    user_data = data[username]
+    total_exp = user_data.get("total_exp", 0)
+    strands = user_data.get("strands", {})
+
+    # Create an Embed
+    embed = Embed(
+        title=f"{username}'s Profile",
+        description=f"**Total EXP:** {total_exp}",
+        color=0x00ffcc  # Light blue/green color
+    )
+
+    # Add a small profile picture thumbnail
+    embed.set_thumbnail(url=pfp_url)
+
+    # Add each strand and its EXP as fields
+    for strand, exp in strands.items():
+        embed.add_field(name=strand, value=f"{exp} EXP", inline=True)
+
+    return embed
+
 
 async def gen_new_activity(client, message: Message, username: str) -> None:
     strand_list = (
@@ -76,10 +109,9 @@ async def gen_new_activity(client, message: Message, username: str) -> None:
         "6. Social\n\n"
         "Reply with a number (1-6) to pick your preferred category!"
     )
-
     await message.channel.send(strand_list)
 
-    def check(m):
+    def check(m: Message) -> bool:
         return m.author == message.author and m.channel == message.channel
 
     try:
@@ -89,36 +121,50 @@ async def gen_new_activity(client, message: Message, username: str) -> None:
         return
 
     activity_input = reply.content.strip()
-
-    allstrands = {
-        "1": "Creativity",
-        "2": "Skill-building",
-        "3": "Physical/Well-being",
-        "4": "Leisure",
-        "5": "Reading/Learning",
-        "6": "Social"
-    }
-
-    strand = allstrands.get(activity_input)
+    strand = ALL_STRANDS.get(activity_input)
 
     if not strand:
         await message.channel.send("Invalid choice. Please type a number between 1 and 6 next time!")
         return
 
-    if strand in activities:
-        activity_choice = random.sample(activities[strand], 2)
-        formatted_choices = "\n- " + "\n- ".join(activity_choice)
-        await message.channel.send(
-            f"Here are two activities you could try from **{strand}**:\n{formatted_choices}"
-        )
-    else:
-        await message.channel.send(f"Something went wrong. Please try again.")
+    if strand not in activities or not activities[strand]:
+        await message.channel.send(f"Sorry, there are no activities available for **{strand}** right now.")
+        return
 
-def get_response(client, user_input: str, username: str = "") -> str:
+    activity_choices = random.sample(activities[strand], k=min(2, len(activities[strand])))
+
+    activity_message = (
+        f"Here are two activities you could try from **{strand}**:\n"
+        f"1. {activity_choices[0]}\n"
+        f"2. {activity_choices[1]}\n\n"
+        "Reply with **1** or **2** to pick the activity you want to do!"
+    )
+    await message.channel.send(activity_message)
+
+    try:
+        choice_reply = await client.wait_for('message', check=check, timeout=30.0)
+    except asyncio.TimeoutError:
+        await message.channel.send(f"{username}, you took too long to choose an activity. Please try again later.")
+        return
+
+    choice = choice_reply.content.strip()
+
+    if choice == "1":
+        selected_activity = activity_choices[0]
+    elif choice == "2":
+        selected_activity = activity_choices[1]
+    else:
+        await message.channel.send("Invalid selection. Please type **1** or **2** next time!")
+        return
+
+    await message.channel.send(f"Awesome! You chose **{selected_activity}**. Have fun, {username}! 🎉")
+
+def get_response(user_input: str, username: str = "", pfp_url: str = "") -> str:
     lowered: str = user_input.lower()
 
     if lowered.startswith('log') or lowered.startswith('l'):
         return 'hello :)'
     
     if lowered.startswith('profile'):
-        return create_user_profile(username)
+        create_user_profile(username)
+        return get_profile_card(username, pfp_url)

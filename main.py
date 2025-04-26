@@ -1,7 +1,7 @@
 from typing import Final
 import os
 from dotenv import load_dotenv
-from discord import Intents, Client, Message
+from discord import Intents, Client, Message, Embed
 from responses import get_response
 from responses import gen_new_activity
 
@@ -16,14 +16,19 @@ intents.message_content = True # NOQA
 client: Client = Client(intents=intents)
 
 #Sending Messages + sending in private
-async def send_message(message: Message, user_message: str, username: str) -> None:
+async def send_message(message: Message, user_message: str, username: str, pfp_url: str) -> None:
     if not user_message:
-        print("(message was empty because intents were not enabled)")
+        print("(message was empty because intents were probably not enabled)")
         return
 
     try:
-        response: str = get_response(client, user_message, username)
-        await message.channel.send(response)
+        response = get_response(user_message, username, pfp_url)
+
+        if isinstance(response, Embed):
+            await message.channel.send(embed=response)
+        else:
+            await message.channel.send(response)
+
     except Exception as e:
         print(e)
 
@@ -54,8 +59,8 @@ async def on_message(message: Message) -> None:
     if command.startswith('activity'):
         await gen_new_activity(client, message, username)
         return
-    
-    await send_message(message, command, username)
+    pfp_url = message.author.avatar.url if message.author.avatar else message.author.default_avatar.url
+    await send_message(message, command, username, pfp_url)
 
 #Step 5: Main entry point
 def main() -> None:
