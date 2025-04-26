@@ -37,6 +37,13 @@ ALL_STRANDS = {
     "5": "Reading/Learning",
     "6": "Social"
 }
+# Reverse map: activity_name -> strand_name
+activity_to_strand = {}
+for strand, acts in activities.items():
+    for act in acts:
+        activity_to_strand[act] = strand
+
+
 def load_user_data():
     if not os.path.exists(DATA_FILE):
         with open(DATA_FILE, 'w') as f:
@@ -277,10 +284,20 @@ async def complete_activity_task(client, message: Message, username: str, user_d
         # No more tasks, mark as completed
         activity_data["current_tasks"][task_num - 1] = "🎉 Completed 🎉"
 
-    # Save changes
-    all_data = load_user_data()
-    all_data[username] = user_data
-    save_user_data(all_data)
+    # Update total EXP
+    user_data["total_exp"] += exp_reward
+
+    # Update strand EXP
+    strand = activity_to_strand.get(activity_name, None)
+    if strand:
+        if strand not in user_data["strands"]:
+            user_data["strands"][strand] = 0  # Initialize if missing
+        user_data["strands"][strand] += exp_reward
+
+        # Save changes
+        all_data = load_user_data()
+        all_data[username] = user_data
+        save_user_data(all_data)
 
     await message.channel.send(
         f"✅ {username} completed **{selected_task_name}** and earned **{exp_reward} EXP** in **{activity_name}**! 🚀"

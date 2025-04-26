@@ -1,8 +1,8 @@
 {
     "ollienel777": {
-        "total_exp": 25,
+        "total_exp": 65,
         "strands": {
-            "Creativity": 25,
+            "Creativity": 65,
             "Skill-building": 0,
             "Physical/Well-being": 0,
             "Leisure": 0,
@@ -15,7 +15,7 @@
             "DigitalArt": 0,
             "Sketching": 0,
             "GraphicDesign": 0,
-            "Baking": 25,
+            "Baking": 0,
             "Cooking": 0,
             "Photography": 0,
             "Videography": 0,
@@ -23,7 +23,7 @@
             "TextileArts": 0,
             "Accessories": 0,
             "Origami": 0,
-            "Journaling": 0,
+            "Journaling": 25,
             "Singing": 0,
             "Rapping": 0,
             "Poetry": 0,
@@ -63,18 +63,18 @@
         },
         "badges": {},
         "activity_tracks": {
-            "Baking": {
-                "exp": 55,
+            "Journaling": {
+                "exp": 65,
                 "tasks_completed": 1,
                 "current_tasks": [
-                    "Cupcakes",
-                    "Muffins",
-                    "Bread Rolls"
+                    "Daily Entry",
+                    "Memory Capture",
+                    "Creative Story Entry"
                 ]
             }
         },
         "unlocked_activities": [
-            "Baking"
+            "Journaling"
         ]
     }
 }
