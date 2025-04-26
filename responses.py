@@ -1,5 +1,6 @@
 from random import choice, randint
 from discord import Message, Embed
+from tasks import master_activity_tasks
 import asyncio
 import json
 import os
@@ -7,15 +8,16 @@ import random
 
 DATA_FILE = "user_data.json"
 
+
 activities = {
             "Creativity": [
-                "Acrylic Painting", "Oil pastel", "Digital art", "Sketching", "Graphic design", "Baking", "Cooking", "Photography/Photo editing", "Videography/Video editing", "Collage", "Knitting/Crochet/Embroidery", "Make accessories", "Origami", "Journaling", "Singing", "Rapping", "Poetry writing", "Gardening", "Calligraphy", "Beatboxing", "Penbeat", "Songwriting/Composing", "Creative writing", "Drama/Acting/Monologues (recreate a scene from your favourite show!)"
+                "Painting", "Pastel", "DigitalArt", "Sketching", "GraphicDesign", "Baking", "Cooking", "Photography", "Videography", "Collage", "TextileArts", "Accessories", "Origami", "Journaling", "Singing", "Rapping", "Poetry", "Gardening", "Calligraphy", "Beatboxing", "Penbeat", "Songwriting", "CreativeWriting", "Drama"
             ],
             "Skill-building": [
-                "Juggling","Rubix Cubing","Magic Tricks","Card Manipulation","Coding","Chess"
+                "Juggling","RubixCubing","MagicTricks","CardManipulation","Coding","Chess"
             ],
             "Physical/Well-being":[
-                "Cardio (Jump roping, running)","Dance","HIIT Workouts","Stretching/Yoga","Frisbee"
+                "Cardio","Dance","HIIT","Yoga","Frisbee"
             ],
             "Leisure":[
                 "Play a new boardgame","Start a new show/movie","Find new artists/listen to new songs"
@@ -54,7 +56,9 @@ def create_user_profile(username: str) -> str:
         data[username] = {
             "total_exp": 0,
             "strands": {},
-            "activities": {}
+            "activities": {},
+            "badges": {},
+            "activity_tracks": {}
         }
 
         # Initialize strands
@@ -69,7 +73,6 @@ def create_user_profile(username: str) -> str:
         save_user_data(data)
         return f"{username}, your profile has been created! Let's start earning EXP! 🎯"
         
-
 def get_profile_card(username: str, pfp_url: str) -> Embed:
     data = load_user_data()
 
@@ -95,8 +98,9 @@ def get_profile_card(username: str, pfp_url: str) -> Embed:
     for strand, exp in strands.items():
         embed.add_field(name=strand, value=f"{exp} EXP", inline=True)
 
-    return embed
 
+
+    return embed
 
 async def gen_new_activity(client, message: Message, username: str) -> None:
     strand_list = (
@@ -193,12 +197,97 @@ async def gen_new_activity(client, message: Message, username: str) -> None:
 
     await message.channel.send(f"✅ You've unlocked **{selected_activity}** and gained **25 EXP** towards **{strand}**!")
 
-def get_response(user_input: str, username: str = "", pfp_url: str = "") -> str:
-    lowered: str = user_input.lower()
+    if selected_activity not in user_profile["activity_tracks"]:
+        user_profile["activity_tracks"][selected_activity] = {
+        "exp": 25,
+        "tasks_completed": 0,
+        "current_tasks": [
+            master_activity_tasks[selected_activity][0]["name"],
+            master_activity_tasks[selected_activity][1]["name"],
+            master_activity_tasks[selected_activity][2]["name"]
+        ]
+    }
+    save_user_data(data)
 
-    if lowered.startswith('log') or lowered.startswith('l'):
-        return 'hello :)'
-    
+async def show_unlocked_activities(client, message: Message, username: str, user_data: dict) -> None:
+    unlocked = user_data.get("unlocked_activities", [])
+
+    if not unlocked:
+        await message.channel.send(f"{username}, you haven't unlocked any activities yet! Keep going! 🚀")
+        return
+
+    formatted_activities = "\n- " + "\n- ".join(unlocked)
+    await message.channel.send(
+        f"**{username}'s Unlocked Activities:**\n{formatted_activities}"
+    )
+
+async def show_activity_track(client, message: Message, username: str, user_data: dict, activity_name: str) -> None:
+    activity_data = user_data.get("activity_tracks", {}).get(activity_name, None)
+
+    if not activity_data:
+        await message.channel.send(f"{username}, you haven't unlocked {activity_name} yet!")
+        return
+
+    embed = Embed(
+        title=f"{username}'s {activity_name} Journey",
+        description=f"**Total {activity_name} EXP:** {activity_data['exp']}",
+        color=0x00FFAA
+    )
+
+    for idx, task in enumerate(activity_data["current_tasks"], start=1):
+        embed.add_field(name=f"Task {idx}", value=task, inline=False)
+
+    await message.channel.send(embed=embed)
+
+async def complete_activity_task(client, message: Message, username: str, user_data: dict, activity_name: str, task_num: int) -> None:
+    activity_data = user_data.get("activity_tracks", {}).get(activity_name, None)
+
+    if not activity_data:
+        await message.channel.send(f"{username}, you haven't unlocked {activity_name} yet! 🔒")
+        return
+
+    current_tasks = activity_data.get("current_tasks", [])
+
+    if not (1 <= task_num <= len(current_tasks)):
+        await message.channel.send(f"{username}, invalid task number! Pick 1, 2, or 3. ❌")
+        return
+
+    selected_task_name = current_tasks[task_num - 1]
+
+    # Find EXP value for the selected task
+    master_tasks = master_activity_tasks.get(activity_name, [])
+    task_info = next((task for task in master_tasks if task["name"] == selected_task_name), None)
+
+    if not task_info:
+        await message.channel.send(f"Error: Could not find task info for {selected_task_name}! ⚠️")
+        return
+
+    exp_reward = task_info["exp"]
+
+    # Award EXP
+    activity_data["exp"] += exp_reward
+    activity_data["tasks_completed"] += 1
+
+    # Replace completed task with the next one
+    next_index = activity_data["tasks_completed"] + 2  # +2 because user always sees 3 tasks
+    if next_index < len(master_tasks):
+        next_task = master_tasks[next_index]["name"]
+        activity_data["current_tasks"][task_num - 1] = next_task
+    else:
+        # No more tasks, mark as completed
+        activity_data["current_tasks"][task_num - 1] = "🎉 Completed 🎉"
+
+    # Save changes
+    all_data = load_user_data()
+    all_data[username] = user_data
+    save_user_data(all_data)
+
+    await message.channel.send(
+        f"✅ {username} completed **{selected_task_name}** and earned **{exp_reward} EXP** in **{activity_name}**! 🚀"
+    )
+
+def user_profile_prompt(user_input: str, username: str = "", pfp_url: str = "") -> str:
+    lowered: str = user_input.lower()    
     if lowered.startswith('profile'):
         create_user_profile(username)
         return get_profile_card(username, pfp_url)
