@@ -35,13 +35,13 @@ activities = {
                 "Cardio","Dance","HIIT","Yoga","Frisbee"
             ],
             "Leisure":[
-                "Play a new boardgame","Start a new show/movie","Find new artists/listen to new songs"
+                "Boardgame","Shows","Songs"
             ],
             "Learning":[
-                "New language", "Wikepedia Page Marathon","Learn Morse Code", "Learn a sentence in Sign Language", "Start a new book"
+                "Language", "WikepediaMarathon","MorseCode", "SignLanguage", "NewBook"
             ],
             "Social": [
-                "Join a new server of interest", "Participate in a micrograme with a group of friends (e.g. pictionary)", "Host a small call with friends and check in with them", "Challenge friends to trivia", "Play co-op games", "Make a collaborative playlist", "Have an award ceremony with friends (e.g. most likely to...)"
+                "Discord", "Microgrames", "FriendsCheckin", "GroupTrivia", "Co-opGames", "CollaborativePlaylist", "AwardCeremony"
             ]
         }
 ALL_STRANDS = {
