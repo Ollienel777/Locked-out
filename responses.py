@@ -8,6 +8,21 @@ import random
 
 DATA_FILE = "user_data.json"
 
+BADGE_REQUIREMENTS = {
+    "<:bronzebadge:1365803704065724416> Bronze": 100,
+    "<:silverbadge:1365803717839945751> Silver": 300,
+    "<:goldbadge:1365803731635142696> Gold": 1000
+}
+
+# Strand mastery badges
+STRAND_BADGE_REQUIREMENTS = {
+    "Creativity": ("<:creativityicon1:1365762192145776811> Creativity Master", 100),
+    "Skill-building": ("<:skillsicon1:1365762155609329734> Skill-building Master", 100),
+    "Physical/Well-being": ("<:healthicon1:1365762172617101323> Physical Master", 100),
+    "Leisure": ("<:leisureicon1:1365762207656185956> Leisure Master", 100),
+    "Learning": ("<:readingicon1:1365762141042380800> Learning Master", 100),
+    "Social": ("<:socialicon1:1365762120712589382> Social Master", 100)
+}
 
 activities = {
             "Creativity": [
@@ -105,8 +120,14 @@ def get_profile_card(username: str, pfp_url: str) -> Embed:
     for strand, exp in strands.items():
         embed.add_field(name=strand, value=f"{exp} EXP", inline=True)
 
+    badges = list(user_data.get("badges", {}).keys())
 
+    if badges:
+        badge_text = " ".join(badges)
+    else:
+        badge_text = "No badges yet."
 
+    embed.add_field(name="**Badges**", value=badge_text, inline=False)
     return embed
 
 async def gen_new_activity(client, message: Message, username: str) -> None:
@@ -307,11 +328,52 @@ async def complete_activity_task(client, message: Message, username: str, user_d
         all_data = load_user_data()
         all_data[username] = user_data
         save_user_data(all_data)
+    
+    for badge, required_exp in BADGE_REQUIREMENTS.items():
+        if user_data["total_exp"] >= required_exp and badge not in user_data["badges"]:
+            user_data["badges"][badge] = True  # Mark as earned
+    
+    strand = activity_to_strand.get(activity_name, None)
+    if strand:
+        if strand not in user_data["strands"]:
+            user_data["strands"][strand] = 0
+        user_data["strands"][strand] += exp_reward
+
+        # Now check if user qualifies for a strand badge
+        strand_badge, strand_required_exp = STRAND_BADGE_REQUIREMENTS.get(strand, (None, None))
+        if strand_badge and user_data["strands"][strand] >= strand_required_exp and strand_badge not in user_data["badges"]:
+            user_data["badges"][strand_badge] = True
+    
+    save_user_data(all_data)
 
     await message.channel.send(
         f"✅ {username} completed **{selected_task_name}** and earned **{exp_reward} EXP** in **{activity_name}**! 🚀"
     )
 
+async def help_command(message: Message):
+    help_message = """
+    **GENOVA Help Guide**
+
+    **$profile** - Creates a new profile or displays your current progress in GENOVA, including your total EXP, EXP in each category, and badges you've earned.
+    
+    **$activity** - Generates two random activities from the category you choose. Reply with a category number (1-6) for the activity you want to try.
+    
+    **$[activity]** - Displays the total EXP you’ve earned in this specific activity and shows the next tasks you need to complete to progress.
+    
+    **$[activity 1]** - Completes the first task in the list for the specific activity. You’ll earn EXP for this task and move closer to leveling up in that activity.
+    
+    **Example usage**:
+    `$profile`: To check your profile.
+    `$activity`: To get random activity suggestions.
+    `$Cooking`: To see your progress in the Cooking activity.
+    `$Cooking 1`: To complete the first task in the Cooking activity.
+
+    **Note**: Type `$help` for this help message anytime!
+
+    """
+
+    await message.channel.send(help_message)
+    
 def user_profile_prompt(user_input: str, username: str = "", pfp_url: str = "") -> str:
     lowered: str = user_input.lower()    
     if lowered.startswith('profile'):

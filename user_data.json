@@ -1,8 +1,8 @@
 {
     "ollienel777": {
-        "total_exp": 85,
+        "total_exp": 465,
         "strands": {
-            "Creativity": 85,
+            "Creativity": 525,
             "Skill-building": 0,
             "Physical/Well-being": 0,
             "Leisure": 0,
@@ -61,15 +61,19 @@
             "Make a collaborative playlist": 0,
             "Have an award ceremony with friends (e.g. most likely to...)": 0
         },
-        "badges": {},
+        "badges": {
+            "<:bronzebadge:1365803704065724416> Bronze": true,
+            "<:silverbadge:1365803717839945751> Silver": true,
+            "<:creativityicon1:1365762192145776811> Creativity Master": true
+        },
         "activity_tracks": {
             "Journaling": {
-                "exp": 85,
-                "tasks_completed": 2,
+                "exp": 465,
+                "tasks_completed": 6,
                 "current_tasks": [
-                    "Illustrated Page",
-                    "Memory Capture",
-                    "Creative Story Entry"
+                    "Bucket List Journal",
+                    "Dream Journal",
+                    "Vision Board Page"
                 ]
             }
         },

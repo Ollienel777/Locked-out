@@ -2,7 +2,7 @@ from typing import Final
 import os
 from dotenv import load_dotenv
 from discord import Intents, Client, Message, Embed
-from responses import gen_new_activity, show_unlocked_activities, show_activity_track, complete_activity_task, create_user_profile, get_profile_card
+from responses import gen_new_activity, show_unlocked_activities, show_activity_track, complete_activity_task, create_user_profile, get_profile_card, help_command
 
 DATA_FILE = "user_data.json"
 
@@ -54,6 +54,10 @@ async def on_message(message: Message) -> None:
         await message.channel.send(embed=profile_embed)
         return
 
+    if command.startswith('help'):
+        await help_command(message)
+        return
+    
     if command.startswith('activity'):
         await gen_new_activity(client, message, username)
         return
