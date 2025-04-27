@@ -10,18 +10,18 @@ DATA_FILE = "user_data.json"
 
 BADGE_REQUIREMENTS = {
     "<:bronzebadge:1365803704065724416> Bronze": 100,
-    "<:silverbadge:1365803717839945751> Silver": 300,
-    "<:goldbadge:1365803731635142696> Gold": 1000
+    "<:silverbadge:1365803717839945751> Silver": 500,
+    "<:goldbadge:1365803731635142696> Gold": 2000
 }
 
 # Strand mastery badges
 STRAND_BADGE_REQUIREMENTS = {
-    "Creativity": ("<:creativityicon1:1365762192145776811> Creativity Master", 100),
-    "Skill-building": ("<:skillsicon1:1365762155609329734> Skill-building Master", 100),
-    "Physical/Well-being": ("<:healthicon1:1365762172617101323> Physical Master", 100),
-    "Leisure": ("<:leisureicon1:1365762207656185956> Leisure Master", 100),
-    "Learning": ("<:readingicon1:1365762141042380800> Learning Master", 100),
-    "Social": ("<:socialicon1:1365762120712589382> Social Master", 100)
+    "Creativity": ("<:creativityicon1:1365762192145776811> Creativity Master", 500),
+    "Skill-building": ("<:skillsicon1:1365762155609329734> Skill-building Master", 500),
+    "Physical/Well-being": ("<:healthicon1:1365762172617101323> Physical Master", 500),
+    "Leisure": ("<:leisureicon1:1365762207656185956> Leisure Master", 500),
+    "Learning": ("<:readingicon1:1365762141042380800> Learning Master", 500),
+    "Social": ("<:socialicon1:1365762120712589382> Social Master", 500)
 }
 
 activities = {

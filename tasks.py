@@ -1,6 +1,6 @@
 master_activity_tasks = {
     # ✨ Creativity
-        "Origami": [
+    "Origami": [
         {"name": "Heart", "exp": 50},
         {"name": "Crane", "exp": 75},
         {"name": "Butterfly", "exp": 100},
@@ -144,7 +144,7 @@ master_activity_tasks = {
     {"name": "Complex Pattern Item", "exp": 190},
     {"name": "Personalized Embroidery Art", "exp": 240}
 ],
-"Accessories": [
+    "Accessories": [
     {"name": "Simple Bracelet", "exp": 30},
     {"name": "Necklace Creation", "exp": 50},
     {"name": "Earring Set", "exp": 70},
@@ -156,7 +156,7 @@ master_activity_tasks = {
     {"name": "Custom Design Challenge", "exp": 190},
     {"name": "Showcase Set", "exp": 240}
 ],
-"Journaling": [
+    "Journaling": [
     {"name": "Daily Entry", "exp": 20},
     {"name": "Gratitude Page", "exp": 40},
     {"name": "Creative Story Entry", "exp": 60},
@@ -168,7 +168,7 @@ master_activity_tasks = {
     {"name": "Vision Board Page", "exp": 180},
     {"name": "Full Month Journal Challenge", "exp": 220}
 ],
-"Singing": [
+    "Singing": [
     {"name": "Breathing Exercises", "exp": 40},
     {"name": "Simple Song Practice", "exp": 60},
     {"name": "Vocal Warmups", "exp": 80},
@@ -180,7 +180,7 @@ master_activity_tasks = {
     {"name": "Record a Song", "exp": 200},
     {"name": "Perform Live/Recorded Showcase", "exp": 250}
 ],
-"Rapping": [
+    "Rapping": [
     {"name": "Simple Flow Practice", "exp": 40},
     {"name": "Write Short Verse", "exp": 60},
     {"name": "Freestyle 30 Seconds", "exp": 80},
@@ -192,7 +192,7 @@ master_activity_tasks = {
     {"name": "Collaborative Rap", "exp": 200},
     {"name": "Original Rap Performance", "exp": 250}
 ],
-"Poetry": [
+    "Poetry": [
     {"name": "Write a Haiku", "exp": 30},
     {"name": "Free Verse Poem", "exp": 50},
     {"name": "Rhymed Couplet", "exp": 70},
@@ -204,7 +204,7 @@ master_activity_tasks = {
     {"name": "Performance Reading", "exp": 190},
     {"name": "Original Poem Collection", "exp": 230}
 ],
-"Gardening": [
+    "Gardening": [
     {"name": "Plant a Seed", "exp": 20},
     {"name": "Water Care Routine", "exp": 40},
     {"name": "Repot a Plant", "exp": 60},
@@ -216,7 +216,7 @@ master_activity_tasks = {
     {"name": "Harvest Herbs/Vegetables", "exp": 180},
     {"name": "Showcase Mini Garden", "exp": 220}
 ],
-"Calligraphy": [
+    "Calligraphy": [
     {"name": "Simple Alphabet", "exp": 30},
     {"name": "Letter Connection", "exp": 50},
     {"name": "Word Formation", "exp": 70},
@@ -228,7 +228,7 @@ master_activity_tasks = {
     {"name": "Script Style Practice", "exp": 190},
     {"name": "Portfolio Showcase", "exp": 230}
 ],
-"Beatboxing": [
+    "Beatboxing": [
     {"name": "Basic Sounds (Kick/Snare)", "exp": 30},
     {"name": "Simple Beat Pattern", "exp": 50},
     {"name": "Speed Challenge", "exp": 70},
@@ -240,7 +240,7 @@ master_activity_tasks = {
     {"name": "Beatbox Loop", "exp": 190},
     {"name": "Record Beatbox Track", "exp": 230}
 ],
-"Penbeat": [
+    "Penbeat": [
     {"name": "Basic Tapping", "exp": 30},
     {"name": "2-sound Combo", "exp": 50},
     {"name": "Simple Rhythm", "exp": 70},
@@ -252,7 +252,7 @@ master_activity_tasks = {
     {"name": "Freestyle Penbeat", "exp": 190},
     {"name": "Record & Post Challenge", "exp": 230}
 ],
-"Songwriting": [
+    "Songwriting": [
     {"name": "Write a Short Melody", "exp": 40},
     {"name": "Create 4 Line Lyrics", "exp": 60},
     {"name": "Compose a Verse", "exp": 80},
@@ -264,7 +264,7 @@ master_activity_tasks = {
     {"name": "Record Full Song", "exp": 200},
     {"name": "Song Release Project", "exp": 260}
 ],
-"CreativeWriting": [
+    "CreativeWriting": [
     {"name": "Short Story (100 words)", "exp": 30},
     {"name": "Character Sketch", "exp": 50},
     {"name": "Setting Description", "exp": 70},

@@ -1,11 +1,11 @@
 {
     "ollienel777": {
-        "total_exp": 465,
+        "total_exp": 1460,
         "strands": {
-            "Creativity": 525,
-            "Skill-building": 0,
-            "Physical/Well-being": 0,
-            "Leisure": 0,
+            "Creativity": 1600,
+            "Skill-building": 100,
+            "Physical/Well-being": 110,
+            "Leisure": 505,
             "Learning": 0,
             "Social": 0
         },
@@ -22,7 +22,7 @@
             "Collage": 0,
             "TextileArts": 0,
             "Accessories": 0,
-            "Origami": 0,
+            "Origami": 25,
             "Journaling": 25,
             "Singing": 0,
             "Rapping": 0,
@@ -34,16 +34,16 @@
             "Songwriting": 0,
             "CreativeWriting": 0,
             "Drama": 0,
-            "Juggling": 0,
-            "RubixCubing": 0,
+            "Juggling": 25,
+            "RubixCubing": 50,
             "MagicTricks": 0,
-            "CardManipulation": 0,
+            "CardManipulation": 25,
             "Coding": 0,
             "Chess": 0,
             "Cardio": 0,
-            "Dance": 0,
+            "Dance": 25,
             "HIIT": 0,
-            "Yoga": 0,
+            "Yoga": 25,
             "Frisbee": 0,
             "Play a new boardgame": 0,
             "Start a new show/movie": 0,
@@ -59,12 +59,15 @@
             "Challenge friends to trivia": 0,
             "Play co-op games": 0,
             "Make a collaborative playlist": 0,
-            "Have an award ceremony with friends (e.g. most likely to...)": 0
+            "Have an award ceremony with friends (e.g. most likely to...)": 0,
+            "Boardgame": 25
         },
         "badges": {
             "<:bronzebadge:1365803704065724416> Bronze": true,
             "<:silverbadge:1365803717839945751> Silver": true,
-            "<:creativityicon1:1365762192145776811> Creativity Master": true
+            "<:creativityicon1:1365762192145776811> Creativity Master": true,
+            "<:leisureicon1:1365762207656185956> Leisure Master": true,
+            "<:goldbadge:1365803731635142696> Gold": true
         },
         "activity_tracks": {
             "Journaling": {
@@ -75,16 +78,86 @@
                     "Dream Journal",
                     "Vision Board Page"
                 ]
+            },
+            "Juggling": {
+                "exp": 25,
+                "tasks_completed": 0,
+                "current_tasks": [
+                    "Basic Toss Practice",
+                    "Two-ball Cascade",
+                    "Three-ball Cascade"
+                ]
+            },
+            "Yoga": {
+                "exp": 25,
+                "tasks_completed": 0,
+                "current_tasks": [
+                    "Simple Sun Salutation",
+                    "5-Minute Stretching Routine",
+                    "Beginner Yoga Flow"
+                ]
+            },
+            "Boardgame": {
+                "exp": 265,
+                "tasks_completed": 4,
+                "current_tasks": [
+                    "Complete 3 Matches",
+                    "Try Cooperative Mode (if available)",
+                    "Learn Advanced Strategies"
+                ]
+            },
+            "Origami": {
+                "exp": 550,
+                "tasks_completed": 5,
+                "current_tasks": [
+                    "Tulip",
+                    "Water Bomb",
+                    "Samurai Helmet"
+                ]
+            },
+            "CardManipulation": {
+                "exp": 25,
+                "tasks_completed": 0,
+                "current_tasks": [
+                    "One-Hand Cut",
+                    "Charlier Cut",
+                    "Thumb Fan"
+                ]
+            },
+            "RubixCubing": {
+                "exp": 25,
+                "tasks_completed": 0,
+                "current_tasks": [
+                    "Solve One Face",
+                    "Solve Cross (Beginner)",
+                    "Solve Full Cube (Guide)"
+                ]
+            },
+            "Dance": {
+                "exp": 55,
+                "tasks_completed": 1,
+                "current_tasks": [
+                    "Learn a Full Song Routine",
+                    "1-Minute Routine Practice",
+                    "Copy TikTok/Short Dance"
+                ]
             }
         },
         "unlocked_activities": [
-            "Journaling"
+            "Journaling",
+            "Juggling",
+            "Yoga",
+            "Boardgame",
+            "Origami",
+            "CardManipulation",
+            "RubixCubing",
+            "Dance"
         ]
     },
     "renchiin": {
-        "total_exp": 25,
+        "total_exp": 70,
         "strands": {
-            "Creativity": 25,
+            "Creativity": 90,
             "Skill-building": 0,
             "Physical/Well-being": 0,
             "Leisure": 0,
@@ -95,7 +168,7 @@
             "Painting": 0,
             "Pastel": 0,
             "DigitalArt": 0,
-            "Sketching": 0,
+            "Sketching": 25,
             "GraphicDesign": 0,
             "Baking": 25,
             "Cooking": 0,
@@ -153,10 +226,20 @@
                     "Muffins",
                     "Bread Rolls"
                 ]
+            },
+            "Sketching": {
+                "exp": 45,
+                "tasks_completed": 1,
+                "current_tasks": [
+                    "Perspective Drawing",
+                    "Simple Objects",
+                    "Human Figures"
+                ]
             }
         },
         "unlocked_activities": [
-            "Baking"
+            "Baking",
+            "Sketching"
         ]
     }
 }
