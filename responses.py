@@ -10,18 +10,18 @@ DATA_FILE = "user_data.json"
 
 BADGE_REQUIREMENTS = {
     "<:bronzebadge:1365803704065724416> Bronze": 100,
-    "<:silverbadge:1365803717839945751> Silver": 500,
-    "<:goldbadge:1365803731635142696> Gold": 2000
+    "<:silverbadge:1365803717839945751> Silver": 2000,
+    "<:goldbadge:1365803731635142696> Gold": 5000
 }
 
 # Strand mastery badges
 STRAND_BADGE_REQUIREMENTS = {
-    "Creativity": ("<:creativityicon1:1365762192145776811> Creativity Master", 500),
-    "Skill-building": ("<:skillsicon1:1365762155609329734> Skill-building Master", 500),
-    "Physical/Well-being": ("<:healthicon1:1365762172617101323> Physical Master", 500),
-    "Leisure": ("<:leisureicon1:1365762207656185956> Leisure Master", 500),
-    "Learning": ("<:readingicon1:1365762141042380800> Learning Master", 500),
-    "Social": ("<:socialicon1:1365762120712589382> Social Master", 500)
+    "Creativity": ("<:creativityicon1:1365762192145776811> Creativity Master", 1000),
+    "Skill-building": ("<:skillsicon1:1365762155609329734> Skill-building Master", 1000),
+    "Physical/Well-being": ("<:healthicon1:1365762172617101323> Physical Master", 1000),
+    "Leisure": ("<:leisureicon1:1365762207656185956> Leisure Master", 1000),
+    "Learning": ("<:readingicon1:1365762141042380800> Learning Master", 1000),
+    "Social": ("<:socialicon1:1365762120712589382> Social Master", 1000)
 }
 
 activities = {
@@ -74,7 +74,7 @@ def save_user_data(data):
 def create_user_profile(username: str) -> str:
     data = load_user_data()
     if username not in data:
-        # Create a new profile structure
+        # Create new profile structure
         data[username] = {
             "total_exp": 0,
             "strands": {},
@@ -113,10 +113,10 @@ def get_profile_card(username: str, pfp_url: str) -> Embed:
         color=0x00ffcc  # Light blue/green color
     )
 
-    # Add a small profile picture thumbnail
+    # Adds profile picture thumbnail
     embed.set_thumbnail(url=pfp_url)
 
-    # Add each strand and its EXP as fields
+    # Adds each strand and its EXP as fields
     for strand, exp in strands.items():
         embed.add_field(name=strand, value=f"{exp} EXP", inline=True)
 
@@ -191,7 +191,7 @@ async def gen_new_activity(client, message: Message, username: str) -> None:
 
     await message.channel.send(f"Awesome! You chose **{selected_activity}**. Have fun, {username}! 🎉")
 
-    # 🛠 NEW: Save to user_data.json
+    #Saves to user_data.json
     data = load_user_data()
 
     if username not in data:
@@ -263,7 +263,7 @@ async def show_activity_track(client, message: Message, username: str, user_data
     )
 
     for idx, task_name in enumerate(activity_data["current_tasks"], start=1):
-        # Find the EXP associated with the task
+        # Finds EXP associated with the task
         master_tasks = master_activity_tasks.get(activity_name, [])
         task_info = next((task for task in master_tasks if task["name"] == task_name), None)
 
@@ -291,7 +291,7 @@ async def complete_activity_task(client, message: Message, username: str, user_d
 
     selected_task_name = current_tasks[task_num - 1]
 
-    # Find EXP value for the selected task
+    # Finds EXP value for the selected task
     master_tasks = master_activity_tasks.get(activity_name, [])
     task_info = next((task for task in master_tasks if task["name"] == selected_task_name), None)
 
@@ -379,3 +379,4 @@ def user_profile_prompt(user_input: str, username: str = "", pfp_url: str = "") 
     if lowered.startswith('profile'):
         create_user_profile(username)
         return get_profile_card(username, pfp_url)
+    

@@ -7,7 +7,7 @@ from responses import gen_new_activity, show_unlocked_activities, show_activity_
 DATA_FILE = "user_data.json"
 
 
-#Load our token from somewhere safe.
+#Load discord token from hidden file.
 load_dotenv()
 TOKEN: Final[str] = os.getenv('DISCORD_TOKEN')
 print(TOKEN)
@@ -17,10 +17,7 @@ intents: Intents = Intents.default()
 intents.message_content = True # NOQA
 client: Client = Client(intents=intents)
 
-#Sending Messages + sending in private
-
-
-#Handling the startup for our bot
+#Handling the startup for bot
 @client.event
 async def on_ready() -> None:
     print(f'{client.user} is now running!')
@@ -43,9 +40,9 @@ async def on_message(message: Message) -> None:
     if not content.startswith('$'):
         return
 
-    command = content[1:]  # remove $
+    command = content[1:]  # removes $
     parts = command.split()
-    activity_name = parts[0].capitalize()  # 'baking' -> 'Baking'
+    activity_name = parts[0].capitalize()  
     task_choice = int(parts[1]) if len(parts) > 1 else None
 
     if command.startswith('profile'):
@@ -62,7 +59,7 @@ async def on_message(message: Message) -> None:
         await gen_new_activity(client, message, username)
         return
 
-    from responses import load_user_data  # You can import it once at top of file globally later
+    from responses import load_user_data
 
     data = load_user_data()
 
